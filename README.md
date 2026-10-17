@@ -3,7 +3,7 @@
 <p align="center">
   <!-- <img src="assets/hero.png" alt="AlgoLens — Interactive algorithm visualization" width="100%" /> -->
   
-![Working](assets/hero.mp4)
+[![Working](assets/hero.png)](assets/hero.mp4)
 </p>
 
 <p align="center">
