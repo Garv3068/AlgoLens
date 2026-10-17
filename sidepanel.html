@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AlgoLens</title>
+  <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+  <header class="topbar">
+    <img class="brand-logo" src="logo.png" alt="AlgoLens logo">
+    <div><h1>AlgoLens</h1><p>Understand the execution</p></div>
+    <span id="engineBadge" class="version">Starting…</span>
+  </header>
+
+  <main>
+    <section class="card">
+      <div class="section-heading">
+        <h2 id="problemTitle">LeetCode problem</h2>
+        <span id="difficulty" class="pill" hidden></span>
+        <button id="refreshBtn" class="ghost">Refresh</button>
+      </div>
+      <div class="lang-row">
+        <label for="lang">Language <span id="langNote" class="inline-note"></span></label>
+        <select id="lang" aria-label="Language"><option value="auto">Auto-detect</option><option value="python">Python 3</option><option value="java">Java</option></select>
+      </div>
+      <details id="codeDetails" class="problem-details"><summary id="codeSummary">Your code is read from LeetCode's editor</summary>
+        <textarea id="code" rows="8" spellcheck="false" placeholder="Your solution is read from the editor. If it can't be read, paste it here."></textarea></details>
+
+      <label for="exampleSelect">Test input</label>
+      <select id="exampleSelect"><option value="">No examples found</option></select>
+      <textarea id="input" rows="2" spellcheck="false" placeholder="nums = [2,7,11,15], target = 9"></textarea>
+
+      <div class="actions">
+        <button id="runBtn" class="primary">Visualize execution</button>
+      </div>
+      <p id="status" class="status" role="status">Open a LeetCode problem to get started.</p>
+      <details class="problem-details"><summary>Problem statement</summary><textarea id="problem" rows="6"></textarea></details>
+    </section>
+
+    <section class="card" id="analysisCard" hidden>
+      <div class="section-heading"><h2>Algorithm overview</h2><span id="confidence" class="pill">Static analysis</span></div>
+      <div id="tags" class="tags"></div>
+      <div class="complexities">
+        <div><span>Time (estimate)</span><strong id="timeComplexity">—</strong></div>
+        <div><span>Space (estimate)</span><strong id="spaceComplexity">—</strong></div>
+      </div>
+      <ul id="evidence" class="evidence"></ul>
+      <p class="caveat">Patterns and complexity come from code structure only. Treat them as hints, not proofs.</p>
+    </section>
+
+    <section class="card" id="traceCard" hidden>
+      <div class="section-heading"><h2>Execution</h2><span id="stepCount" class="pill">0 steps</span></div>
+      <div id="banner" class="banner" hidden></div>
+      <div class="editor-hint">The running line is highlighted in LeetCode's editor — hover it there to see the variables.</div>
+      <div id="stepTitle" class="step-title"></div>
+      <div id="stepChange" class="step-change"></div>
+      <div id="stats" class="stats"></div>
+      <div id="structView"></div>
+      <div id="sceneView" class="scene"></div>
+      <div id="inspectorView"></div>
+      <div id="watchView"></div>
+      <div id="treeView" class="struct-block"></div>
+      <div id="resultView" class="result-view"></div>
+      <div class="dock">
+        <div class="trace-controls">
+          <button id="firstBtn" class="secondary" title="First step">⏮</button>
+          <button id="prevBtn" class="secondary" title="Previous (←)">←</button>
+          <button id="playBtn" class="primary" title="Play / pause (space)">▶ Play</button>
+          <button id="nextBtn" class="secondary" title="Step into (→)">→</button>
+          <button id="lastBtn" class="secondary" title="Last step">⏭</button>
+        </div>
+        <div class="trace-controls small">
+          <button id="overBtn" class="secondary" title="Step over calls (O)">⤼ Step over</button>
+          <button id="outBtn" class="secondary" title="Step out of this function (U)">⤴ Step out</button>
+          <select id="speed" aria-label="Speed"><option value="1100">Slow</option><option value="600" selected>Normal</option><option value="250">Fast</option></select>
+        </div>
+        <input id="scrubber" type="range" min="0" max="0" value="0" aria-label="Step">
+      </div>
+    </section>
+
+    <footer>Your code runs locally inside this extension (Python via WebAssembly, Java via a built-in interpreter) in a worker with no page access. Nothing is sent to a server. Traces are capped at 1,500 steps and 10 seconds.</footer>
+  </main>
+  <script type="module" src="sidepanel.js"></script>
+</body>
+</html>
