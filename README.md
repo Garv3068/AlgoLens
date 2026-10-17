@@ -4,9 +4,10 @@
   <!-- <img src="assets/hero.png" alt="AlgoLens — Interactive algorithm visualization" width="100%" /> -->
   
 <!-- [![Working](assets/hero.png)](assets/hero.mp4) -->
-<video src="assets/hero.mp4" controls width="800">
+[![Working](assets/hero.mp4)] 
+<!-- <video src="assets/hero.mp4" controls width="800">
   Your browser does not support embedded videos.
-</video>
+</video> -->
 </p>
 
 <p align="center">
