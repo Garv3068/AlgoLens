@@ -1,4 +1,4 @@
-// Pure, language-neutral model built on top of the raw trace (same schema from Python and Java).
+// Pure, language-neutral model built on top of the raw trace (same schema from Python, Java and C++).
 // It reconstructs call frames, per-frame variable history, the recursion tree and data-structure roles.
 // No DOM or chrome.* access, so it is unit-testable in node.
 
@@ -157,6 +157,15 @@ export function inferRoles(code, lang) {
       else if (type === "Stack") set(name, "stack", { top: "back" });
       else if (type === "Queue") set(name, "queue");
       else if (uses(name, "push|pop") && !uses(name, "poll|offer|add|pollFirst|removeFirst|addLast")) set(name, "stack", { top: "front" });
+      else set(name, "queue");
+    }
+  } else if (lang === "cpp") {
+    for (const m of code.matchAll(/\b(stack|queue|priority_queue|deque)\s*<[^;=()]*?>+\s*&?\s*(\w+)/g)) {
+      const [, type, name] = m;
+      if (type === "priority_queue") set(name, "heap");
+      else if (type === "stack") set(name, "stack", { top: "back" });
+      else if (type === "queue") set(name, "queue");
+      else if (uses(name, "push_back|pop_back|emplace_back") && !uses(name, "pop_front|push_front|emplace_front")) set(name, "stack", { top: "back" });
       else set(name, "queue");
     }
   } else {
