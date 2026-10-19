@@ -4,6 +4,14 @@
 
 export const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 
+// Display words for null / booleans differ by language (Python: None/True/False, others: null/true/false).
+let NULL_TEXT = "None", TRUE_TEXT = "True", FALSE_TEXT = "False";
+export const nullText = () => NULL_TEXT;
+export function setDisplayLang(lang) {
+  const py = lang === "python";
+  NULL_TEXT = py ? "None" : "null"; TRUE_TEXT = py ? "True" : "true"; FALSE_TEXT = py ? "False" : "false";
+}
+
 /** Build the model. `trace` is the worker's trace result; `code` is the user's source. */
 export function buildModel(trace, code, lang) {
   const steps = trace.steps || [];
@@ -150,7 +158,13 @@ export function inferRoles(code, lang) {
   const roles = {};
   const set = (n, role, extra) => { if (!roles[n]) roles[n] = { role, ...extra }; };
   const uses = (n, re) => new RegExp(`\\b${n}\\.(?:${re})\\(`).test(code);
-  if (lang === "java") {
+  if (lang === "js") {
+    for (const m of code.matchAll(/\b(?:const|let|var)\s+(\w+)\s*=\s*new\s+(?:Min|Max)?PriorityQueue\b/g)) set(m[1], "heap");
+    for (const m of code.matchAll(/\b(?:const|let|var)\s+(\w+)\s*=\s*new\s+Queue\b/g)) set(m[1], "queue");
+    for (const m of code.matchAll(/\b(?:const|let|var)\s+(\w+)\s*=\s*new\s+Deque\b/g)) set(m[1], "queue");
+    for (const m of code.matchAll(/\b(\w+)\.shift\(\s*\)/g)) set(m[1], "queue");
+    for (const m of code.matchAll(/\b(\w+)\.push\(/g)) if (new RegExp(`\\b${m[1]}\\.pop\\(\\s*\\)`).test(code)) set(m[1], /^(res|result|results|ans|answer|out|output|path|cur|current|curr|comb|combo|subset|temp|tmp|ret|paths|combination|perm|level|row|arr|list)$/i.test(m[1]) ? "list" : "stack", { top: "back" });
+  } else if (lang === "java") {
     for (const m of code.matchAll(/\b(Stack|Deque|ArrayDeque|Queue|LinkedList|PriorityQueue)\s*<[^;=()]*>+\s+(\w+)/g)) {
       const [, type, name] = m;
       if (type === "PriorityQueue") set(name, "heap");
@@ -210,7 +224,7 @@ const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&
 export function compactText(s, limit = 6) {
   if (!s) return "";
   switch (s.t) {
-    case "prim": return s.v === null ? "None" : s.v === true ? "True" : s.v === false ? "False" : String(s.v);
+    case "prim": return s.v === null ? NULL_TEXT : s.v === true ? TRUE_TEXT : s.v === false ? FALSE_TEXT : String(s.v);
     case "str": return JSON.stringify(s.v) + (s.cut ? "…" : "");
     case "list": case "tuple": case "deque": case "set": {
       const [open, close] = s.t === "set" ? ["{", "}"] : s.t === "tuple" ? ["(", ")"] : ["[", "]"];
