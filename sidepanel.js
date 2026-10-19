@@ -1,5 +1,5 @@
-import { esc, compact } from "./render.js";
-import { buildModel, describeStep, editorLine, editorKind, hoverMarkdown, stepOver, stepOut, stepBackOver } from "./model.js";
+import { esc, compact, setRenderLang } from "./render.js";
+import { buildModel, describeStep, editorLine, editorKind, hoverMarkdown, stepOver, stepOut, stepBackOver, setDisplayLang } from "./model.js";
 import { renderScene, renderInspector, renderWatch } from "./scene.js";
 import { renderStructures, renderCallTree } from "./structs.js";
 import { parseExamples, splitInput } from "./inputs.js";
@@ -11,7 +11,7 @@ const state = { model: null, current: 0, stdout: "", examples: [], page: null, s
 const ui = { pointers: new Set(), showAll: false, expanded: new Set(), pins: new Set(), inspect: null };
 const nSteps = () => (state.model ? state.model.steps.length : 0);
 
-// ------------------------------------------------------------------ Engines (Web Workers): Python via Pyodide, Java and C++ via JS interpreters
+// ------------------------------------------------------------------ Engines (Web Workers): Python via Pyodide; Java, C++ and JavaScript via JS interpreters
 class Engine {
   constructor(file) { this.file = file; this.worker = null; this.nextId = 1; this.pending = new Map(); this.readyPromise = null; }
   start() {
@@ -43,19 +43,21 @@ class Engine {
   }
   async ready() { return this.readyPromise; }
 }
-const engines = { python: new Engine("./worker.js"), java: new Engine("./java-worker.js"), cpp: new Engine("./cpp-worker.js") };
-const LANG_NAMES = { python: "Python", java: "Java", cpp: "C++" };
+const engines = { python: new Engine("./worker.js"), java: new Engine("./java-worker.js"), cpp: new Engine("./cpp-worker.js"), js: new Engine("./js-worker.js") };
+const LANG_NAMES = { python: "Python", java: "Java", cpp: "C++", js: "JavaScript" };
 
 function currentLang() {
   const chosen = $("lang").value;
   if (chosen !== "auto") return chosen;
   const id = (state.page?.language || "").toLowerCase();
   if (id === "cpp" || id === "c++" || id.startsWith("cpp")) return "cpp";
+  if (id === "javascript" || id === "js") return "js";
   if (id.startsWith("java") && !id.startsWith("javascript")) return "java";
   if (id.startsWith("python")) return "python";
   const code = $("code").value;
   if (/^\s*def\s+\w+|\bself\b/m.test(code)) return "python";
   if (/#include|using\s+namespace|\bvector\s*<|\bpublic\s*:|\bnullptr\b|std::/.test(code)) return "cpp";
+  if ((/\b(var|let|const)\s+\w+\s*=/.test(code) || /=>|\bfunction\b/.test(code)) && !/\b(public|private|static|void)\b|\b(int|long|double|boolean|String)\s+\w+\s*[=;(]/.test(code)) return "js";
   if (/\b(public|private|class)\b/.test(code) && /;\s*$/m.test(code)) return "java";
   return "python";
 }
@@ -73,7 +75,7 @@ function engineFor(lang) {
 function updateLangUi() {
   const lang = currentLang(), e = engines[lang];
   $("langNote").textContent = $("lang").value === "auto" ? `· detected ${LANG_NAMES[lang]}` : "";
-  $("code").placeholder = lang === "java" ? "Your Java solution (class Solution { ... }) is read from the editor, or paste it here." : lang === "cpp" ? "Your C++ solution (class Solution { public: ... };) is read from the editor, or paste it here." : "Your Python solution is read from the editor, or paste it here.";
+  $("code").placeholder = lang === "java" ? "Your Java solution (class Solution { ... }) is read from the editor, or paste it here." : lang === "cpp" ? "Your C++ solution (class Solution { public: ... };) is read from the editor, or paste it here." : lang === "js" ? "Your JavaScript solution (var twoSum = function(nums, target) { ... }) is read from the editor, or paste it here." : "Your Python solution is read from the editor, or paste it here.";
   if (e.readyPromise) $("engineBadge").textContent = `${LANG_NAMES[lang]} ready`; else engineFor(lang);
 }
 
@@ -119,9 +121,9 @@ function applyPage(result, { announce }) {
 
   const pageLang = (result.language || "").toLowerCase();
   updateLangUi();
-  const unsupported = pageLang && $("lang").value === "auto" && !/^(python|java$|cpp)/.test(pageLang);
+  const unsupported = pageLang && $("lang").value === "auto" && !/^(python|java$|cpp|javascript)/.test(pageLang);
   if (announce) {
-    if (unsupported) setStatus(`Your editor is set to ${pageLang}. Only Python 3, Java and C++ can be traced — switch the language in LeetCode, or pick one in the selector.`);
+    if (unsupported) setStatus(`Your editor is set to ${pageLang}. Only Python 3, Java, C++ and JavaScript can be traced — switch the language in LeetCode, or pick one in the selector.`);
     else setStatus(result.code ? (result.partial ? "Code read from visible editor lines only (may be incomplete)." : `Loaded the problem and your ${LANG_NAMES[currentLang()]} code. Click Visualize.`)
       : "Problem loaded, but the editor wasn't readable yet. It will retry automatically, or paste your code.");
   }
@@ -155,6 +157,7 @@ async function run() {
   $("runBtn").disabled = true;
   setStatus("Running your code with tracing…");
   const lang = currentLang(), engine = engineFor(lang);
+  setDisplayLang(lang); setRenderLang(lang);
   try {
     await engine.ready();
     const analysis = await engine.request("analyze", { code });
