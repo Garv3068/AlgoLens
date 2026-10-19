@@ -1,7 +1,7 @@
 // Whole-structure drawings: linked lists and trees with pointer labels, and the recursion call tree.
 // Pure functions returning HTML/SVG strings.
 import { esc, pointerClass, countNodes } from "./render.js";
-import { framesAt, callTree, compactText, same } from "./model.js";
+import { framesAt, callTree, compactText, same, nullText } from "./model.js";
 
 // ------------------------------------------------------------------ linked lists
 function llNames(model) { // every variable name that is ever a linked list (so a null pointer can still be labelled)
@@ -58,10 +58,10 @@ function linkedListHTML(model, i, frames) {
     }).join('<span class="larrow">→</span>');
     const tail = row.joins ? `<span class="larrow">→</span><span class="ljoin" title="joins another chain">↪ ${esc(row.joins.val)}</span>`
       : row.cycle ? `<span class="larrow cyc">↺</span><span class="ljoin cyc">back to ${esc(row.cycle.val)} [${row.cycle.at}]</span>`
-      : row.cut ? '<span class="larrow">→ …</span>' : '<span class="larrow">→</span><span class="lnull">None</span>';
+      : row.cut ? '<span class="larrow">→ …</span>' : `<span class="larrow">→</span><span class="lnull">${esc(nullText())}</span>`;
     return `<div class="lrow">${nodes}${tail}</div>`;
   };
-  const noneHtml = nones.length ? `<div class="lnones">${nones.map((n) => `<span class="ptag ${pointerClass(n.name)} ${n.top ? "" : "dimtag"}">${esc(n.name)}</span>`).join("")}<span class="muted"> → None</span></div>` : "";
+  const noneHtml = nones.length ? `<div class="lnones">${nones.map((n) => `<span class="ptag ${pointerClass(n.name)} ${n.top ? "" : "dimtag"}">${esc(n.name)}</span>`).join("")}<span class="muted"> → ${esc(nullText())}</span></div>` : "";
   return `<div class="sb-title">Linked list <span class="muted">· pointers shown above nodes</span></div><div class="lscroll">${rows.map(rowHTML).join("")}</div>${noneHtml}`;
 }
 
