@@ -1,8 +1,10 @@
 // Pure functions: value snapshot -> HTML strings. No DOM or chrome.* access, so they are unit-testable in node.
-import { compactText, same } from "./model.js";
+import { compactText, same, nullText } from "./model.js";
 
 export const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 export const compact = compactText;
+let jsLabels = false;
+export const setRenderLang = (lang) => { jsLabels = lang === "js"; };
 export { same };
 
 // ------------------------------------------------------------------ pointer helpers
@@ -156,7 +158,7 @@ function setHTML(name, s, prev, ctx) {
 // ------------------------------------------------------------------ linked list / tree, inline (full drawings live in structs.js)
 function llInline(s) {
   const nodes = s.v.map((v) => `<span class="node">${esc(v)}</span>`).join('<span class="arrow">→</span>');
-  const tail = s.cycle ? `<span class="arrow">↺ back to [${s.cto}]</span>` : s.cut ? '<span class="arrow">→ …</span>' : '<span class="arrow">→ None</span>';
+  const tail = s.cycle ? `<span class="arrow">↺ back to [${s.cto}]</span>` : s.cut ? '<span class="arrow">→ …</span>' : `<span class="arrow">→ ${esc(nullText())}</span>`;
   return `<div class="ll">${nodes}${tail}</div>`;
 }
 export const countNodes = (n) => (n ? 1 + countNodes(n.l) + countNodes(n.r) : 0);
@@ -180,13 +182,14 @@ export function renderValue(name, s, prev, ctx) {
     case "set": return setHTML(name, s, prev, ctx);
     case "dict": return dictHTML(name, s, prev, ctx);
     case "ll": return llInline(s);
-    case "tree": return s.v ? `<span class="nchip tree" title="binary tree">🌳 ${countNodes(s.v)} node${countNodes(s.v) === 1 ? "" : "s"}, root ${esc(s.v.v)}</span>` : '<span class="prim none">None</span>';
+    case "tree": return s.v ? `<span class="nchip tree" title="binary tree">🌳 ${countNodes(s.v)} node${countNodes(s.v) === 1 ? "" : "s"}, root ${esc(s.v.v)}</span>` : `<span class="prim none">${esc(nullText())}</span>`;
     default: return `<span class="prim">${esc(s.v)}</span>`;
   }
 }
 
 export const kindLabel = (s, role) => {
   if (!s) return "";
+  if (jsLabels && s.label && !role) return s.n !== undefined ? `${s.label} · ${s.n}` : s.label;
   if (role?.role === "stack") return "stack";
   if (role?.role === "queue") return "queue";
   if (role?.role === "heap") return "heap";
