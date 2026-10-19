@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "AlgoLens \u2014 LeetCode Visualizer",
-  "version": "0.5.0",
-  "description": "Analyze LeetCode problems and your Python, Java or C++ solution, then step through a real execution trace.",
+  "version": "0.6.0",
+  "description": "Analyze LeetCode problems and your Python, Java, C++ or JavaScript solution, then step through a real execution trace.",
   "minimum_chrome_version": "116",
   "permissions": [
     "sidePanel",
