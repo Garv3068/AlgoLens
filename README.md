@@ -1,351 +1,241 @@
-# AlgoLens — Visualize Code. Understand Algorithms.
+<div align="center">
 
-**Your personal algorithm visualization companion for LeetCode.**
+# AlgoLens
 
-AlgoLens is an open-source Chrome extension that helps developers understand how their code executes through step-by-step tracing, variable inspection, call-stack visualization, and interactive data-structure views — directly alongside LeetCode.
+### See your LeetCode code think — one step at a time.
 
-Instead of simply reading an algorithm explanation, follow your own code as it executes.
+**Trace. Visualize. Understand. Improve.**
 
-<p align="center">
-  <img src="assets/hero.png" alt="AlgoLens — Code execution and algorithm visualization" width="850">
-</p>
+AlgoLens is a Chrome extension that turns LeetCode solutions into interactive, step-by-step visual explanations. Follow execution as variables change, function calls unfold, and data structures evolve — directly beside the problem you're solving.
 
-<p align="center">
-  <a href="https://github.com/Garv3068/AlgoLens/releases"><img src="https://img.shields.io/github/v/release/Garv3068/AlgoLens?style=for-the-badge&color=blue" alt="Latest Release"></a>
-  <a href="https://github.com/Garv3068/AlgoLens/blob/main/LICENSE"><img src="https://img.shields.io/github/license/Garv3068/AlgoLens?style=for-the-badge" alt="License"></a>
-  <a href="https://github.com/Garv3068/AlgoLens/stargazers"><img src="https://img.shields.io/github/stars/Garv3068/AlgoLens?style=for-the-badge" alt="GitHub Stars"></a>
-  <a href="https://github.com/Garv3068/AlgoLens/issues"><img src="https://img.shields.io/github/issues/Garv3068/AlgoLens?style=for-the-badge" alt="Issues"></a>
-</p>
+[Repository](https://github.com/Garv3068/AlgoLens) · [Report a bug](https://github.com/Garv3068/AlgoLens/issues) · [Request a feature](https://github.com/Garv3068/AlgoLens/issues)
 
-<p align="center">
-  <b>Python · Java · C++ · JavaScript</b>
-</p>
+</div>
 
 ---
 
-## Demo
+## 🎬 See AlgoLens in action
 
-See how AlgoLens transforms code execution into a visual learning experience.
-
-<!-- Replace this preview with your actual demo thumbnail or GIF if desired. -->
+<!-- Keep these paths aligned with the files in the assets/ directory. -->
 <p align="center">
   <a href="assets/hero.mp4">
-    <img src="assets/hero.png" alt="Watch the AlgoLens demo" width="800">
+    <img src="assets/hero.png" alt="AlgoLens demo preview — click to open the video" width="850">
   </a>
 </p>
 
-<p align="center">
-  <i>Select the preview to open the demo video in the repository.</i>
-</p>
+<p align="center"><em>Click the preview to open the demo video.</em></p>
 
-> **Tip:** GitHub README files do not reliably play repository-hosted MP4 files inline across all views. For a smoother experience, consider uploading your demo to GitHub Releases or a video platform and linking it here.
+## 💡 Why AlgoLens?
 
----
+Reading a solution tells you what the code says. Stepping through it helps you understand **why it works**.
 
-## The Problem
+AlgoLens brings code execution closer to the way you learn algorithms: follow the current line, inspect variables, explore function calls, and see the state change as the program runs.
 
-Solving a coding problem is one thing. Understanding every step of its execution is another.
+## ✨ Features
 
-When learning algorithms and data structures, it can be difficult to keep track of:
+- **Four languages:** Python, Java, C++, and JavaScript.
+- **Step-by-step tracing:** move through execution instead of seeing only the final result.
+- **Live code-line highlighting:** connect a trace step to the corresponding line in the LeetCode editor.
+- **Variable inspection:** follow values as they change during execution.
+- **Call-stack and recursion views:** understand function calls, returns, and recursive execution.
+- **Data-structure visualizations:** inspect supported arrays, collections, pointers, and other structures represented by the trace.
+- **Playback and navigation:** move through trace steps and revisit earlier states.
+- **LeetCode-focused workflow:** work alongside the problem and your existing editor.
+- **Local-first execution:** the tracing engines run in the browser/extension environment; AlgoLens does not require you to configure a paid code-execution API or your own backend.
 
-- How variable values change during execution.
-- Why a recursive function is called and when it returns.
-- How pointers and indices move through an array.
-- How a call stack evolves over time.
-- What causes an unexpected result or incorrect output.
+> **Language support note:** AlgoLens uses language-specific tracing implementations. The depth of syntax and runtime support can differ by language. It is designed for LeetCode-style solutions and is not intended to replace a complete Python, Java, C++, or JavaScript compiler/runtime.
 
-Traditional explanations often show the final answer without making the execution process intuitive.
+## 🧑‍💻 Supported languages
 
-**AlgoLens bridges that gap by making your code's execution visible.**
+| Language | Engine approach | Intended use |
+|---|---|---|
+| Python | Pyodide/WebAssembly with the AlgoLens tracer | Trace supported Python LeetCode solutions |
+| Java | JavaScript-based interpreter | Trace supported Java syntax and common solution patterns |
+| C++ | JavaScript-based interpreter | Trace supported C++ syntax and common solution patterns |
+| JavaScript | JavaScript-based interpreter with parsing support | Trace supported JavaScript solution patterns |
 
-## Features
+AlgoLens has been tested against a variety of LeetCode question types in all four languages. As with any interpreter-based tool, results depend on the syntax and runtime features used by a particular solution.
 
-### Step-by-Step Code Tracing
+## 🚀 Install AlgoLens
 
-Follow your solution one execution step at a time. Inspect the current state, move forward and backward through recorded steps, and understand how the algorithm progresses.
+### Option 1: Install from the source repository
 
-### Live Editor Line Highlighting
-
-Connect execution steps with the corresponding line in your LeetCode editor, helping you see exactly which part of your solution is being executed.
-
-### Variable Inspector
-
-Track variable values as execution progresses. Observe changing indices, intermediate results, function arguments, and other state information.
-
-### Call-Stack Visualization
-
-Explore function calls, nested execution frames, recursion depth, and returned values. Understand how recursive algorithms break problems into smaller subproblems.
-
-### Data-Structure Visualizations
-
-Inspect the structures and values your algorithm works with, including:
-
-- Arrays and strings
-- Variables and pointers
-- Function frames and call stacks
-- Recursion and function-call relationships
-- Other supported structures exposed by the tracing engine
-
-The available visualizations depend on the language engine and the structures detected in the trace.
-
-### Four-Language Support
-
-AlgoLens provides separate tracing engines for:
-
-| Language | Execution approach |
-|---|---|
-| Python | Pyodide/WebAssembly with a Python tracing engine |
-| Java | JavaScript-based interpreter |
-| C++ | JavaScript-based interpreter |
-| JavaScript | JavaScript-based interpreter with Acorn-based parsing |
-
-**Important:** Java and C++ tracing use interpreter implementations, not full native compilers. Some language constructs, standard-library features, and LeetCode solutions may not be supported. Compatibility depends on the implemented language subset.
-
-### Local-First Architecture
-
-AlgoLens is designed to perform its core tracing in the browser, using local workers and bundled runtimes rather than requiring a paid remote execution backend.
-
-This helps keep the project accessible to students and independent developers.
-
----
-
-## How It Works
-
-```text
-        LeetCode Problem
-               |
-               v
-    Read problem and editor code
-               |
-               v
-       Select language engine
-               |
-       +-------+-------+-------+
-       |       |       |       |
-       v       v       v       v
-    Python   Java     C++  JavaScript
-    Pyodide  Interpreter Interpreter Interpreter
-       |       |       |       |
-       +-------+-------+-------+
-               |
-               v
-       Generate execution trace
-               |
-               v
-       Build shared trace model
-               |
-       +-------+--------+--------+
-       |       |        |        |
-       v       v        v        v
-     Code   Variables  Call    Data
-   highlight inspector  stack structures
-               |
-               v
-      Interactive step playback
-```
-
-The tracing engines feed execution information into a shared visualization model. This lets the interface present execution state consistently across supported languages while keeping the language-specific logic separate.
-
----
-
-## Installation
-
-### Option 1: Install from a GitHub Release
-
-Once a release ZIP is published:
-
-1. Visit [AlgoLens Releases](https://github.com/Garv3068/AlgoLens/releases).
-2. Download the latest extension ZIP.
-3. Extract it into a folder on your computer.
-4. Open Google Chrome and navigate to `chrome://extensions`.
-5. Enable **Developer mode**.
-6. Click **Load unpacked**.
-7. Select the extracted folder containing `manifest.json`.
-8. Open a LeetCode problem and launch AlgoLens from the Chrome toolbar.
-
-Keep the extracted folder in place while using the extension. Do not delete or move it after loading the extension.
-
-### Option 2: Run from Source
+1. Download or clone this repository.
+2. If you downloaded a ZIP, extract it first.
+3. Open Google Chrome and navigate to `chrome://extensions`.
+4. Turn on **Developer mode**.
+5. Click **Load unpacked**.
+6. Select the AlgoLens project folder — the folder containing `manifest.json`.
+7. Open a LeetCode problem and click the AlgoLens extension icon to open its side panel.
 
 ```bash
 git clone https://github.com/Garv3068/AlgoLens.git
 cd AlgoLens
 ```
 
-Then:
+There is no separate application server to start for normal extension use. Keep the project folder in a permanent location while using the unpacked extension.
 
-1. Open `chrome://extensions` in Chrome.
-2. Enable **Developer mode**.
-3. Select **Load unpacked**.
-4. Choose the cloned `AlgoLens` directory.
-5. Navigate to a LeetCode problem and open the extension.
+### Option 2: Install a packaged release
 
-The repository should contain all required runtime files. Preserve the bundled `pyodide/` directory and the language-engine directories when copying or packaging the extension.
+When a ZIP is available under **GitHub → Releases → Assets**:
 
-> **Note:** Loading an unpacked extension is intended for development and testing. A regular consumer installation through the Chrome Web Store may be added as a future distribution option.
+1. Download the AlgoLens release ZIP (not GitHub's automatically generated source-code archive).
+2. Extract the ZIP to a permanent folder.
+3. Open `chrome://extensions` and enable **Developer mode**.
+4. Click **Load unpacked** and select the extracted folder containing `manifest.json`.
 
----
+**Note:** This is a developer-mode installation, not a one-click Chrome Web Store installation. Chrome may show a warning because the extension is loaded unpacked.
 
-## Project Structure
+## 🧭 How to use it
+
+1. Open a LeetCode problem page.
+2. Open the AlgoLens side panel from the extension toolbar icon.
+3. Select a supported language or use automatic detection if available.
+4. Let AlgoLens read the problem/editor context, or paste your solution into the panel if needed.
+5. Run the trace using a suitable example input.
+6. Step through execution and inspect the highlighted line, variables, call frames, and visualizations.
+7. Move backward and forward to revisit important state changes.
+
+**Tip:** Start with a small input. Large inputs and deeply recursive solutions can generate long traces and may take longer to visualize.
+
+## 🧠 How it works
+
+AlgoLens is built around a language-specific tracing layer and a shared visualization model.
+
+```text
+LeetCode problem + solution
+            │
+            ▼
+   Language selection
+            │
+            ▼
+  Local tracing engine
+  ├── Python: Pyodide + tracer
+  ├── Java: Java interpreter
+  ├── C++: C++ interpreter
+  └── JavaScript: JS interpreter
+            │
+            ▼
+    Trace events / snapshots
+            │
+            ▼
+   Shared execution model
+            │
+            ▼
+  Side-panel visualizations
+  ├── Code-line highlighting
+  ├── Variables and values
+  ├── Call stack / recursion
+  └── Data structures + playback
+```
+
+The shared model helps keep playback and visualization behavior consistent across languages while each tracing engine handles its supported language syntax.
+
+## 🏗️ Project structure
+
+The main source files are organized around the extension UI, page integration, language engines, and shared visualization logic.
 
 ```text
 AlgoLens/
-├── manifest.json          # Chrome extension configuration
-├── service-worker.js      # Extension background coordination
-├── sidepanel.html         # Side panel interface
-├── sidepanel.css          # Interface styling
-├── sidepanel.js           # UI state and engine orchestration
+├── manifest.json          # Chrome Extension Manifest V3 configuration
+├── service-worker.js      # Extension lifecycle and message routing
+├── sidepanel.html         # Side-panel interface
+├── sidepanel.css          # Side-panel styling
+├── sidepanel.js           # UI state, engine selection, trace playback
 ├── content.js             # LeetCode page integration
-├── page-bridge.js         # Page/editor communication
-│
-├── worker.js              # Python worker using Pyodide
-├── tracer.py              # Python execution tracing
-├── pyodide/               # Bundled Python runtime
-│
+├── page-bridge.js         # Page/editor bridge for extraction and highlighting
+├── worker.js              # Python tracing worker
+├── tracer.py              # Python trace implementation
+├── pyodide/               # Local Pyodide runtime
 ├── java-worker.js         # Java tracing worker
-├── java/                  # Java interpreter
-│
+├── java/                  # Java interpreter implementation
 ├── cpp-worker.js          # C++ tracing worker
-├── cpp/                   # C++ interpreter
-│
+├── cpp/                   # C++ interpreter implementation
 ├── js-worker.js           # JavaScript tracing worker
-├── js/                    # JavaScript interpreter
-│
-├── model.js               # Shared execution and frame model
-├── render.js              # Shared rendering utilities
+├── js/                    # JavaScript interpreter implementation
+├── model.js               # Shared trace model and execution frames
+├── render.js              # Shared value/rendering helpers
 ├── scene.js               # Execution scene and variable inspector
-├── structs.js             # Data-structure and call-tree views
-├── inputs.js              # Input and example parsing
-│
+├── structs.js             # Data-structure and call-tree visualizations
+├── inputs.js              # Input parsing helpers
 ├── assets/                # Screenshots and demo media
+├── logo.png               # Extension logo
 ├── README.md
 └── LICENSE
 ```
 
-*This overview describes the principal files; additional runtime and support files may exist in the repository.*
+The tree above highlights the primary files. The repository may contain additional supporting files and runtime assets required by the extension.
 
----
+## 🔒 Privacy and execution
 
-## Designed for Learning
+AlgoLens is designed for local-first tracing. The core tracing workflow does not require a paid cloud compiler or a developer-hosted backend.
 
-AlgoLens is useful for:
+- Code tracing is performed by the extension's local/browser-based engines.
+- The extension interacts with LeetCode to obtain problem/editor context and highlight the corresponding code line.
+- Treat code you run through any interpreter as untrusted input. AlgoLens uses browser workers and runtime-specific safeguards, but no software sandbox should be considered a guarantee against every possible issue.
+- Review the extension permissions in `manifest.json` before installing.
+- If you fork or modify AlgoLens, audit any added dependencies, network requests, analytics, or telemetry and update the privacy description accordingly.
 
-- **Students** learning data structures and algorithms.
-- **LeetCode learners** debugging and understanding their own solutions.
-- **Interview candidates** studying recursion, pointers, loops, and function calls.
-- **Educators and mentors** demonstrating how algorithms execute.
-- **Open-source contributors** interested in code tracing, developer tools, and visualization.
+This section describes the intended architecture. For a specific release, users should review that version's source code and permissions.
 
----
+## 🛠️ Troubleshooting
 
-## Privacy and Security
+| Issue | Things to try |
+|---|---|
+| AlgoLens cannot read the problem or editor | Refresh the LeetCode problem tab, then reopen the side panel. |
+| The selected language is wrong | Select the language manually in the panel, if available. |
+| A trace fails or stops early | Try a smaller input and check whether the solution uses syntax not supported by the selected tracing engine. |
+| The extension does not update after pulling changes | Open `chrome://extensions`, reload AlgoLens, and refresh the LeetCode tab. |
+| The editor line does not highlight | Refresh the LeetCode tab and try running the trace again. |
+| Python takes longer on first use | The local Pyodide runtime may need to initialize. Allow it to finish loading. |
 
-AlgoLens is designed around local-first execution.
+If the issue persists, [open a GitHub issue](https://github.com/Garv3068/AlgoLens/issues). Include the language, a minimal reproducible example, the expected behavior, and what happened instead. **Remove personal information and any private code before sharing logs or snippets.**
 
-- Core tracing is intended to run locally in the browser.
-- The extension does not require a paid code-execution API for its core workflow.
-- Code should be executed in the designated tracing workers, not in the privileged extension page.
-- Do not run solutions containing secrets, credentials, or other sensitive information.
+## 🗺️ Roadmap
 
-Please review the source code and permissions before installation. Any future remote services, telemetry, or AI integrations should be clearly disclosed.
+The priorities for future development include:
 
-*Privacy claims should be verified against the exact release build and its network behavior before publication.*
+- [ ] Expand automated regression tests for all four language engines.
+- [ ] Improve trace consistency for edge cases, recursion, and backward stepping.
+- [ ] Add more visualizations for common algorithmic patterns and data structures.
+- [ ] Improve error messages for unsupported syntax and invalid inputs.
+- [ ] Make installation and release packaging easier for new users.
+- [ ] Prepare the extension for wider distribution, including Chrome Web Store review.
 
----
+Have an idea? Open an issue and describe the use case.
 
-## Roadmap
+## 🤝 Contributing
 
-The roadmap focuses on reliability, accessibility, and a better learning experience.
-
-- [ ] Improve tracing accuracy across all four supported languages.
-- [ ] Strengthen variable tracking, call-stack reconstruction, and return handling.
-- [ ] Ensure backward stepping restores a consistent execution state.
-- [ ] Expand support for arrays, stacks, recursion trees, pointers, and graphs.
-- [ ] Improve error messages and handling of unsupported language constructs.
-- [ ] Add automated tests for tracing engines and shared visualization logic.
-- [ ] Improve performance for larger inputs and deeper recursion.
-- [ ] Add more screenshots and language-specific demonstrations.
-- [ ] Publish reproducible release packages and changelogs.
-- [ ] Prepare for Chrome Web Store distribution.
-
-Have an idea that would make learning algorithms easier? Contributions and feature suggestions are welcome.
-
----
-
-## Contributing
-
-Contributions are welcome! Whether you want to fix a bug, improve a visualization, add test coverage, or extend a language engine, your help can make AlgoLens better for everyone.
+Contributions, bug reports, suggestions, and documentation improvements are welcome.
 
 1. Fork the repository.
-2. Create a feature branch.
-3. Make your changes and test them.
-4. Commit your changes with a descriptive message.
-5. Open a pull request explaining the improvement.
+2. Create a focused branch for your change.
+3. Test your change on the relevant language engine and LeetCode question types.
+4. Open a pull request describing the change and how you tested it.
 
-```bash
-git checkout -b feature/your-feature
-git add .
-git commit -m "feat: describe your improvement"
-git push origin feature/your-feature
-```
+For tracing-engine changes, include a small example solution, input, and expected trace behavior whenever possible. Keep changes to one language from breaking the shared visualization model for the others.
 
-Please include reproduction steps for bug reports and a small example when proposing changes to tracing behavior.
+## ⭐ Support the project
 
-- **Report bugs:** [GitHub Issues](https://github.com/Garv3068/AlgoLens/issues)
-- **Browse the code:** [AlgoLens Repository](https://github.com/Garv3068/AlgoLens)
-
----
-
-## Known Limitations
-
-AlgoLens is an evolving developer tool. Keep these points in mind:
-
-- Interpreter-based tracing does not guarantee compatibility with every valid Java or C++ program.
-- Complex language features and some standard-library operations may be unsupported.
-- Large inputs, infinite loops, and deep recursion can exceed execution limits.
-- LeetCode may change its editor or page structure, affecting code extraction or line highlighting.
-- Trace quality depends on the accuracy of each language engine and its supported constructs.
-
-If a solution fails to trace, please open an issue with a minimal reproducible example. Remove any personal or sensitive data before sharing code.
-
----
-
-## Technology Stack
-
-- **Chrome Extensions — Manifest V3**
-- **JavaScript, HTML, and CSS**
-- **Web Workers**
-- **Pyodide and WebAssembly**
-- **Acorn-based JavaScript parsing**
-- **Custom Java and C++ interpreter implementations**
-- **Git and GitHub**
-
----
-
-## License
-
-AlgoLens is intended to be an open-source project. See [`LICENSE`](LICENSE) for the terms governing use, modification, and distribution.
-
-If the repository does not yet contain a license file, add your chosen license before describing the project as permissively licensed.
-
----
-
-## Support the Project
-
-If AlgoLens helps you understand algorithms, consider supporting its development:
+If AlgoLens helps you understand a tricky problem:
 
 - ⭐ Star the repository.
-- 🐛 Report bugs and suggest improvements.
-- 💡 Share ideas for new visualizations.
-- 🔧 Contribute code, tests, and documentation.
-- 📣 Share AlgoLens with fellow students and developers.
+- 🐛 Report bugs and suggest features.
+- 🔀 Contribute improvements.
+- 📣 Share it with fellow learners and developers.
 
-Every contribution helps make algorithm learning more visual and accessible.
+Every bit of feedback helps make algorithm learning more visual and approachable.
 
-<p align="center">
-  <b>Understand the execution. Visualize the logic. Master the algorithm.</b>
-</p>
+## 📄 License
 
-<p align="center">
-  Made for learners, by learners.
-</p>
+AlgoLens is licensed under the **MIT License**. See [`LICENSE`](LICENSE) for details.
+
+---
+
+<div align="center">
+
+**Built to make algorithm execution easier to see, follow, and understand.**
+
+[GitHub Repository](https://github.com/Garv3068/AlgoLens) · [Issues](https://github.com/Garv3068/AlgoLens/issues)
+
+</div>
