@@ -228,7 +228,7 @@ Every bit of feedback helps make algorithm learning more visual and approachable
 
 ## 📄 License
 
-AlgoLens is licensed under the **MIT License**. See [`LICENSE`](LICENSE) for details.
+AlgoLens is licensed under the **MIT License**. See [`LICENSE`](https://github.com/Garv3068/AlgoLens/blob/main/MIT%20LICENSE) for details.
 
 ---
 
