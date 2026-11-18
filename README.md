@@ -22,7 +22,7 @@ AlgoLens is a Chrome extension that turns LeetCode solutions into interactive, s
     <img src="assets/hero.png" alt="AlgoLens demo preview — click to open the video" width="850">
   </a>
 </p> -->
-[![Watch AlgoLens Demo](assets/hero.png)](https://www.youtube.com/watch?v=ZyQn0DxO9wE)
+[![Watch AlgoLens Demo](assets/AlgoLens-LeetcodeExtension-gif.gif)
 
 Click the thumbnail above to watch the full demo on YouTube.
 
